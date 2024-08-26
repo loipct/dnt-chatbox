@@ -1,0 +1,117 @@
+/* Main Container */
+.main-container {
+  display: flex;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+/* Chat Container */
+.chat-container {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  margin-right: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  overflow: hidden;
+  height: 500px; /* Set a fixed height for the chat container */
+}
+
+/* Chat Header */
+.chat-header {
+  background-color: #007bff;
+  color: white;
+  padding: 10px;
+  text-align: center;
+}
+
+/* Chat Box */
+.chatbox {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+  border-bottom: 1px solid #ccc;
+  background-color: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Messages */
+.message {
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 5px;
+  max-width: 80%; /* Ensure messages are not too wide */
+  word-wrap: break-word;
+  display: block;
+}
+
+.message.bot {
+  background-color: #201b1b; /* Light grey for bot messages */
+  align-self: flex-start;
+  text-align: left;
+}
+
+.message.user {
+  background-color: #007bff; /* Blue for user messages */
+  color: rgb(11, 19, 178);
+  align-self: flex-end;
+  text-align: right;
+}
+
+/* Chat Input Container */
+.chat-input-container {
+  display: flex;
+  padding: 10px;
+  background-color: #fff;
+}
+
+.chat-input-container input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box; /* Ensure padding is included in width calculation */
+}
+
+.chat-input-container button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.chat-input-container button:hover {
+  background-color: #0056b3;
+}
+
+/* Mode Selector */
+.mode-selector {
+  padding: 10px;
+  background-color: #fff;
+}
+
+/* Resource Collection */
+.resource-collection {
+  flex: 1;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+  background-color: #f9f9f9;
+}
+
+.resource-count {
+  margin-bottom: 10px;
+}
+
+.resource-item {
+  border-bottom: 1px solid #ccc;
+  padding: 10px 0;
+}
+
+.resource-item:last-child {
+  border-bottom: none;
+}
