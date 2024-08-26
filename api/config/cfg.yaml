@@ -1,0 +1,7 @@
+- name : database
+  embedding_model : "BAAI/bge-small-en-v1.5"
+  environment:
+    index_name : "dnt-book"
+  
+- name : llm_model
+  model_name : "gemini-1.0-pro-latest"

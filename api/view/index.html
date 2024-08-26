@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Chat with Resource Collection</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Thêm các kiểu để phần Resource Collection có thể cuộn */
+        .resource-collection {
+            max-height: 400px; /* Bạn có thể điều chỉnh chiều cao tối đa này */
+            overflow-y: auto;  /* Cho phép cuộn theo chiều dọc */
+            border: 1px solid #ccc;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        /* Cấu hình các phần khác nếu cần */
+        .chatbox {
+            height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .message {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-container">
+        <div class="chat-container">
+            <div class="chat-header">
+                <h1>Chat Interface</h1>
+            </div>
+
+            <div id="chatbox" class="chatbox">
+                <!-- Messages will appear here -->
+            </div>
+
+            <div class="chat-input-container">
+                <input id="query" type="text" placeholder="Type your query..." onkeypress="handleKeyPress(event)">
+                <input id="top_k" type="number" placeholder="Enter a number..." onkeypress="handleKeyPress(event)">
+                <button onclick="performAction()">Send</button>
+            </div>
+
+            <div class="mode-selector">
+                <label for="Querymode">Select QueryMode:</label>
+                <select id="queryMode">
+                    <option value="Auto">QA Auto</option>
+                    <option value="Factual">QA Factual</option>
+                    <option value="Analytical">QA Analytical</option>
+                </select>
+            </div>
+
+            <div class="mode-selector">
+                <label for="RerankMode">Select RerankMode:</label>
+                <select id="rerankMode">
+                    <option value="true">w rerank</option>
+                    <option value="false">wt rerank</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="resource-collection">
+            <h2>Resource Collection</h2>
+            <div id="resources">
+                <!-- Resources will be displayed here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function performAction() {
+            const query = document.getElementById('query').value;
+            const k = parseInt(document.getElementById('top_k').value);
+            const queryMode = document.getElementById('queryMode').value;
+            const rerankMode = document.getElementById('rerankMode').value === 'true';
+
+            if (query.trim() === "") return;
+
+            try {
+                const response = await fetch(`http://127.0.0.1:8000/search/adaptive_query/${query}?k=${k}&rerank_mode=${rerankMode}&query_category=${queryMode}`);
+                const data = await response.json();
+
+                addMessage(data.text || "No response text available", 'bot');
+                displayResources(data.ResourceCollection || []);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+
+            document.getElementById('query').value = '';
+        }
+
+        function addMessage(text, sender) {
+            const chatbox = document.getElementById('chatbox');
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message', sender);
+            messageElement.innerText = text;
+            chatbox.appendChild(messageElement);
+
+            chatbox.scrollTop = chatbox.scrollHeight;
+        }
+
+        function displayResources(resources) {
+            const resourcesDiv = document.getElementById('resources');
+            resourcesDiv.innerHTML = '';
+
+            if (!Array.isArray(resources)) {
+                console.error('Expected an array for resources, got:', resources);
+                return;
+            }
+
+            const resourceCount = resources.length;
+            const countElement = document.createElement('div');
+            countElement.classList.add('resource-count');
+            countElement.innerText = `Number of resources: ${resourceCount}`;
+            resourcesDiv.appendChild(countElement);
+
+            resources.forEach(resource => {
+                const resourceElement = document.createElement('div');
+                resourceElement.classList.add('resource-item');
+                resourceElement.innerHTML = `<strong>${resource.topic}</strong><br><em>${resource.title}</em><br>${resource.principle}`;
+                resourcesDiv.appendChild(resourceElement);
+            });
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                performAction();
+            }
+        }
+    </script>
+</body>
+
+</html>
