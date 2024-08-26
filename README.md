@@ -1,6 +1,6 @@
 # LangChain RAG Pattern Demo (React, FastAPI, Pinecone DB Vectorstore)
 
-Windows 11 & Python 3.11.0  
+Windows 11 & Python 3.11.0 & Node.js v16.20.2
 
 ## Overview
 This repository contains a demo showcasing the implementation of the RAG (Retrieval Augmented Generation) pattern using Pinecone DB and LangChain. 
@@ -16,9 +16,8 @@ The RAG pattern combines retrieval-based and generative-based approaches to natu
 - Trying to make raptor ..
 
 ## Requirements
-- Azure subscription for deploying Azure Cosmos DB for MongoDB vCore.
 - Python environment with LangChain installed.
-- Basic knowledge of MongoDB and natural language processing concepts.
+- Basic knowledge of Vectorstore and natural language processing concepts.
 
 ## Usage
 1. Follow the steps provided in the README file.
