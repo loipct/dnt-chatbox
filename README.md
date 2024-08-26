@@ -24,8 +24,8 @@ The RAG pattern combines retrieval-based and generative-based approaches to natu
 1. Follow the steps provided in the README file.
 
 ## Steps
-1. [Step 2](demo_api) - Create FastAPI to integrate LangChain RAG pattern with web front-end.
-2. [Step 3](demo_web) - Build the React web front-end to ask 'grounded' questions of your data and view relevant documents. 
+1. [Step 1](api) - Create FastAPI to integrate LangChain RAG pattern with web front-end.
+2. [Step 2](web) - Build the React web front-end to ask 'grounded' questions of your data and view relevant documents. 
 3. Follow the setup instructions provided in the README file.
 4. Run the demo application and explore the RAG pattern in action.
 
