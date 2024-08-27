@@ -10,7 +10,7 @@ The RAG pattern combines retrieval-based and generative-based approaches to natu
 
 - Implemented routing
 - Implemented multi queries
-- Implemented query translation :stepback, rewriting, HyDE, sub-query decomposition
+- Implemented query translation : stepback, rewriting, HyDE, sub-query decomposition
 - Implemented adaptive retrieval
 - Implemented reranking
 - Implemented Self-RAG
