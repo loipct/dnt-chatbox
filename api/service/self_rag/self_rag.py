@@ -1,4 +1,4 @@
-from .chains import retrieval_chain, relevance_chain,\
+from .utils import retrieval_chain, relevance_chain,\
         generation_chain, support_chain, utility_chain
         
 from data.pinecone import search as search

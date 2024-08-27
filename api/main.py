@@ -8,7 +8,7 @@ app = FastAPI()
 
 app.mount("/static", StaticFiles(directory=r"view", html=True), name="static")
 
-origins = ["*"]
+origins = ["http://localhost:3000"]
 
 app.add_middleware(
     CORSMiddleware,

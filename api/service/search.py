@@ -2,7 +2,7 @@ import os
 from data.pinecone import search as search
 from model.airesults import AIResults
 from model.resource import Resource
-from .adaptive_retrieval import AdaptiveRAG
+from .adaptive_retrieval.adaptive_retrieval import AdaptiveRAG
 from langchain_core.runnables import  RunnablePassthrough
 from langchain.prompts import ChatPromptTemplate
 from langchain_google_genai import GoogleGenerativeAI

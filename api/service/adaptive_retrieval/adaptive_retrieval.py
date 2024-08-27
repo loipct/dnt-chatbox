@@ -1,16 +1,4 @@
-from langchain.prompts import ChatPromptTemplate, PromptTemplate
-from langchain_core.output_parsers import StrOutputParser
-from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_core.pydantic_v1 import BaseModel, Field
-from typing import List, Dict, Any, Tuple
-from langchain.docstore.document import Document
-from config import config as config
-from data.pinecone import search as search
-from langchain_core.retrievers import BaseRetriever
-from service import rerank as rerank  
-from model.resource import Resource
-
-
+from .utils import *
 
 class categories_options(BaseModel):
         category: str = Field(description="The category of the query, the options are: Factual, Analytical", example="Factual")
@@ -18,7 +6,7 @@ class categories_options(BaseModel):
 
 class QueryClassifier:
     def __init__(self):
-        self.llm = ChatGoogleGenerativeAI(model="gemini-1.5-pro-latest", temperature=0.8, top_p=0.5)
+        self.llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash-latest", temperature=0.8, top_p=0.5)
         self.prompt = PromptTemplate(
             input_variables=["query"],
             template="Classify the following query into one of these categories: Factual, Analytical.\nQuery: {query}\nCategory:"
@@ -43,7 +31,9 @@ class BaseRetrievalStrategy:
     def retrieve(self, query, k=4):
         return self.search_engine.similarity_search(query, k=k)
 
-    
+
+
+   
 class FactualRetrievalStrategy(BaseRetrievalStrategy):
     def retrieve(self, query, k=4):
         print("retrieving factual")
@@ -99,16 +89,34 @@ class AnalyticalRetrievalStrategy(BaseRetrievalStrategy):
 """
 AdaptiveRetriever
 """
+import random
 
+def random_retriever(retrievers):
+    retrieve =random.choice(retrievers)
+    print("Using ",retrieve[0])
+    return retrieve[1]
+    
 class AdaptiveRetriever:
     def __init__(self):
         self.classifier = QueryClassifier()
+        factualRetrieval = [("RewritingRetriever", RewritingRetriever()),
+                            ("StepBackRetriever", StepBackRetriever()),
+                            ("HyDERetriever", HyDERetriever())]
+        analyticalRetrieval = [("FusionRetriever", FusionRetriever()),
+                              ("SubQueryDecompositionRetriever", SubQueryDecompositionRetriever())]
         self.strategies = {
-            "Factual": FactualRetrievalStrategy(),
-            "Analytical": AnalyticalRetrievalStrategy(),
+            "Factual": factualRetrieval,
+            "Analytical": analyticalRetrieval,
             # "Opinion": OpinionRetrievalStrategy(texts),
             # "Contextual": ContextualRetrievalStrategy(texts)
         }
+        # self.strategies = {
+        #     "Factual": FactualRetrievalStrategy(),
+        #     "Analytical": AnalyticalRetrievalStrategy(),
+        #     # "Opinion": OpinionRetrievalStrategy(texts),
+        #     # "Contextual": ContextualRetrievalStrategy(texts)
+        # }
+
 
     def get_relevant_documents(self, query: str, k:int = 3, mode: str = "Auto") -> List[Document]:
         if mode == "Auto" or mode not in ['Factual', 'Analytical', 'Auto']:
@@ -117,7 +125,8 @@ class AdaptiveRetriever:
             category = mode
         print("Using : ", category)
         strategy = self.strategies[category]
-        return strategy.retrieve(query, k)
+        retriever = random_retriever(strategy)
+        return retriever.retrieve(query, k)
     
 # Define aditional retriever that inherits from langchain BaseRetriever
 class PydanticAdaptiveRetriever():

@@ -96,21 +96,25 @@
 
 /* Resource Collection */
 .resource-collection {
-  flex: 1;
-  border: 1px solid #ccc;
-  border-radius: 10px;
+  max-height: 400px; /* Giới hạn chiều cao của khung lăn */
+  overflow-y: auto;  /* Thêm khung lăn theo chiều dọc nếu nội dung vượt quá chiều cao */
   padding: 10px;
-  background-color: #f9f9f9;
+  border: 1px solid #ccc; /* Thêm đường viền để khung rõ ràng hơn */
+  background-color: #f9f9f9; /* Màu nền nhẹ nhàng */
+  border-radius: 5px; /* Bo góc cho khung */
+}
+
+.resource-item {
+  margin-bottom: 15px; /* Tạo khoảng cách giữa các mục */
+  padding: 5px;
+  border-bottom: 1px solid #ddd; /* Đường kẻ dưới mỗi mục */
 }
 
 .resource-count {
   margin-bottom: 10px;
+  font-weight: bold;
 }
 
-.resource-item {
-  border-bottom: 1px solid #ccc;
-  padding: 10px 0;
-}
 
 .resource-item:last-child {
   border-bottom: none;
