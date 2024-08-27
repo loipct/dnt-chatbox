@@ -8,6 +8,7 @@ from langchain.prompts import ChatPromptTemplate
 from langchain_google_genai import GoogleGenerativeAI
 from langchain_core.output_parsers import StrOutputParser
 from .self_rag import self_rag as self_rag
+from .crag import crag as crag
 from config import config as config
 
 llm_model_name = config.get_llm_model_config()['model_name']
@@ -22,6 +23,12 @@ def do_self_rag(query:str, top_k) -> str:
     response = self_rag.self_rag(query=query, top_k = top_k)
     print("Response : ", response)
     default_text = f"""Result of Self-RAG: \n\n"""
+    return AIResults(text = default_text + response, ResourceCollection=[]) 
+
+def do_crag(query:str, k:int) -> str:
+    response = crag.crag_process(query=query, k = k)
+    print("Response : ", response)
+    default_text = f"""Result of CRAG: \n\n"""
     return AIResults(text = default_text + response, ResourceCollection=[]) 
 
 def get_adaptive_query(query:str, k:int = 3, rerank_mode: bool = True, query_category = "Auto") -> str:

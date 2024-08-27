@@ -21,16 +21,21 @@ const App = () => {
     }
 
     addMessage(query, 'user');
-
+    const encodedQuery = encodeURIComponent(query);
   
     try {
       let url;
       if (ragMode === 'Self-RAG') {
         // Tạo URL cho Self-RAG
-        url = `http://127.0.0.1:8000/search/self_rag/${query}?top_k=${top_k}`;
-      } else {
+        url = `http://127.0.0.1:8000/search/self_rag/${encodedQuery}?top_k=${topKInt}`;
+      } 
+      else if (ragMode === 'CRAG') {
+        // Tạo URL cho CRAG
+        url = `http://127.0.0.1:8000/search/crag/${encodedQuery}?k=${topKInt}`;
+      } 
+      else {
         // Tạo URL cho Normal-RAG
-        url = `http://127.0.0.1:8000/search/adaptive_query/${query}?k=${top_k}&rerank_mode=${rerankMode}&query_category=${queryMode}`;
+        url = `http://127.0.0.1:8000/search/adaptive_query/${encodedQuery}?k=${topKInt}&rerank_mode=${rerankMode}&query_category=${queryMode}`;
       }
   
       const response = await fetch(url);
@@ -116,6 +121,7 @@ const App = () => {
           >
             <option value="Normal-RAG">Normal-RAG</option>
             <option value="Self-RAG">Self-RAG</option>
+            <option value="CRAG">CRAG</option>
           </select>
         </div>
 

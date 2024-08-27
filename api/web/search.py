@@ -21,6 +21,14 @@ def get_self_rag(query, top_k : int = 3) -> AIResults:
     return search.get_llm_response(query)
 
 
+@router.get("/crag/{query}")
+def get_crag(query, k : int = 4) -> AIResults:
+    if route.routing_query(query):
+        print("This question is related to the book !!")
+        return search.do_crag(query, k)
+    return search.get_llm_response(query)
+
+
 @router.get("/adaptive_query/{query}")
 def get_adaptive_query(query, k:int = 5, rerank_mode: bool = True, query_category = Literal["Auto", "Factual", "Analytical"]) -> AIResults:
     if route.routing_query(query):
