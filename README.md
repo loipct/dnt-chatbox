@@ -13,6 +13,7 @@ The RAG pattern combines retrieval-based and generative-based approaches to natu
 - Implemented adaptive retrieval
 - Implemented reranking
 - Implemented Self-RAG
+- Implemented CRAG
 - Trying to make raptor ..
 
 ## Requirements
